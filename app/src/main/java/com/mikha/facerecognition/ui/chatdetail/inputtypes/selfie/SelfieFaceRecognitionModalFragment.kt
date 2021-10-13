@@ -65,11 +65,12 @@ class SelfieFaceRecognitionModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun startCamera(){
+        Toast.makeText(context, R.string.center_your_face, Toast.LENGTH_SHORT).show()
         fotoapparat = Fotoapparat(
             context = requireContext(),
-            view = binding.cameraPreview,                   // view which will draw the camera preview
-            scaleType = ScaleType.CenterCrop,    // (optional) we want the preview to fill the view
-            lensPosition = front(),              // (optional) define an advanced configuration
+            view = binding.cameraPreview,
+            scaleType = ScaleType.CenterCrop,
+            lensPosition = front(),
             cameraErrorCallback = { error ->
                 Log.e(TAG, "onCreate: ${error.message}")
             }
@@ -84,15 +85,7 @@ class SelfieFaceRecognitionModalFragment : BottomSheetDialogFragment() {
 
         binding.btnTakePicture.setOnClickListener {
             val photoResult = fotoapparat.takePicture()
-            photoResult.toBitmap().whenAvailable { bitmapPhoto ->
-                bitmapPhoto?.bitmap?.let { it1 ->
-
-                    binding.imgResult.setImageBitmap(it1)
-                    binding.imgResult.rotation = (-bitmapPhoto.rotationDegrees).toFloat()
-                    binding.cameraPreview.visibility = View.INVISIBLE
-                    validateFacesOnImage(it1,(-bitmapPhoto.rotationDegrees).toFloat())
-                }
-            }
+            viewModel.validateImage(photoResult)
         }
 
         binding.btnTakeAnotherPicture.setOnClickListener {
@@ -114,59 +107,10 @@ class SelfieFaceRecognitionModalFragment : BottomSheetDialogFragment() {
         binding.btnSend.visibility = View.GONE
     }
 
-    @MainThread
-    private fun cameraFailState(){
-        Log.i(TAG, "cameraFailState: ")
-        binding.cameraPreview.visibility = View.GONE
-        binding.btnTakePicture.visibility = View.GONE
-        binding.btnTakeAnotherPicture.visibility = View.VISIBLE
-        binding.btnSend.visibility = View.GONE
-    }
-
-    @MainThread
-    private fun cameraSuccessState(){
-        Log.i(TAG, "cameraSuccessState: ")
-        binding.cameraPreview.visibility = View.GONE
-        binding.btnTakePicture.visibility = View.GONE
-        binding.btnTakeAnotherPicture.visibility = View.VISIBLE
-        binding.btnSend.visibility = View.VISIBLE
-    }
-
-    private fun validateFacesOnImage(bitmap: Bitmap, rotationDegrees: Float){
-
-        val rotateBitmap = bitmap.rotateBitmap(rotationDegrees)
-        val highAccuracyOpts = FaceDetectorOptions.Builder()
-            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
-            .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
-            .build()
-
-        val image = InputImage.fromBitmap(rotateBitmap,0)
-        val detector = FaceDetection.getClient(highAccuracyOpts)
-
-        detector.process(image)
-            .addOnSuccessListener { faces ->
-                if (faces.size > 0) {
-                    cameraSuccessState()
-                    inputTypeFaceRecognition.isFinished = true
-                    inputTypeFaceRecognition.photo = bitmap
-                    inputTypeFaceRecognition.rotationDegrees = rotationDegrees
-                }else{
-                    Toast.makeText(requireContext(), R.string.detect_failed, Toast.LENGTH_LONG).show()
-                    cameraFailState()
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "validateFacesOnImage: ${e.message}", e)
-                cameraFailState()
-            }
-
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SelfieFaceRecognitionModalFragmentViewModel::class.java)
-
         setupObservers()
     }
 
@@ -183,6 +127,7 @@ class SelfieFaceRecognitionModalFragment : BottomSheetDialogFragment() {
                     inputTypeFaceRecognition.rotationDegrees = it.rotationDegrees
                 }
                 FaceRecognitionState.Status.ERROR -> {
+                    Toast.makeText(requireContext(), R.string.detect_failed, Toast.LENGTH_LONG).show()
                     binding.cameraPreview.visibility = View.GONE
                     binding.btnTakePicture.visibility = View.GONE
                     binding.btnTakeAnotherPicture.visibility = View.VISIBLE

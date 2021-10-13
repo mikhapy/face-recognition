@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/chatDetailFragment"
         android:name="com.mikha.facerecognition.ui.chatdetail.ChatDetailFragment"
-        android:label="chat_detail_fragment"
+        android:label="@string/chat"
         tools:layout="@layout/chat_detail_fragment" >
         <action
             android:id="@+id/action_chatDetailFragment_to_selfieFaceRecognitionModalFragment"

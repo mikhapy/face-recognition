@@ -6,4 +6,6 @@
     <string name="detect_failed">We can\'t detect a face. Please try again</string>
     <string name="take_selfie">Take a selfie</string>
     <string name="wrong_argument_received">Wrong argument received</string>
+    <string name="center_your_face">Center your face on the frame</string>
+    <string name="chat">Chat</string>
 </resources>
