@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_rounded">45dp</dimen>
+    <dimen name="button_radius">30dp</dimen>
+    <dimen name="button_elevation">5dp</dimen>
+    <dimen name="button_icon">20dp</dimen>
+</resources>

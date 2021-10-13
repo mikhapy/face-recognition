@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/android-projects/face-recognition/app/src/main/res/drawable/ic_camera.xml" value="0.34375" />
+        <entry key="..\:/android-projects/face-recognition/app/src/main/res/layout/activity_main.xml" value="0.38405797101449274" />
+        <entry key="..\:/android-projects/face-recognition/app/src/main/res/layout/chat_detail_fragment.xml" value="0.22" />
+        <entry key="..\:/android-projects/face-recognition/app/src/main/res/layout/fragment_selfie_face_recognition_modal.xml" value="0.4466666666666667" />
+        <entry key="..\:/android-projects/face-recognition/app/src/main/res/layout/inputtype_face.xml" value="0.32760416666666664" />
+        <entry key="..\:/android-projects/face-recognition/app/src/main/res/layout/inputtype_text.xml" value="0.4466666666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
